@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/bfolkens/ruby-shortwave.svg?branch=master)](https://travis-ci.org/bfolkens/ruby-shortwave)
+
 # Shortwave
 
 Shortwave is another attempt at the upload "problem," and approaches is from the perspective of streams, pipelines, and a framework based on lightweight tools instead of one monolithic class.
