@@ -8,7 +8,7 @@ module Shortwave
 
     def initialize(obj, namespace, source_stream)
       self.asset_host = Shortwave::Config.asset_host
-      self.backend = Shortwave::Config.backend
+      self.backend = Shortwave::Config.backend.new(self)
       self.cache_unsaved_attachments = Shortwave::Config.cache_unsaved_attachments
 
       @obj = obj
