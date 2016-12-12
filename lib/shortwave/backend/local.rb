@@ -25,7 +25,7 @@ module Shortwave
       end
 
       def file_path
-        File.join(@@store_path, @attachment.path)
+        File.join(self.class.store_path, @attachment.path)
       end
     end
   end

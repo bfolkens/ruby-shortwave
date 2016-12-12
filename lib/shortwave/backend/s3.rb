@@ -6,18 +6,20 @@ module Shortwave
     class S3 < Base
 
       class << self
-        attr_accessor :store_path
+        attr_accessor :aws_bucket
+        attr_accessor :aws_credentials
+        attr_accessor :aws_store_attributes
       end
 
       def initialize(attachment)
         super(attachment)
 
-        @client = Aws::S3::Client.new(@@config[:aws_credentials])
+        @client = Aws::S3::Client.new(self.class.aws_credentials)
         @s3 = Aws::S3::Resource.new(client: @client)
       end
 
       def write(io)
-        s3obj.put(@@config[:aws_store_attributes].merge(body: io))
+        s3obj.put(self.class.aws_store_attributes.merge(body: io))
       end
 
       def read
@@ -30,8 +32,8 @@ module Shortwave
       end
 
       def s3obj
-        merged_path = [@@store_path, @attachment.path].join('/')
-        @s3.bucket(@@config[:aws_bucket]).object(merged_path)
+        merged_path = [self.class.store_path, @attachment.path].join('/')
+        @s3.bucket(self.class.aws_bucket).object(merged_path)
       end
     end
   end
