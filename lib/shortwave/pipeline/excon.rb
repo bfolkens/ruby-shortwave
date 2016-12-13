@@ -1,10 +1,12 @@
+require 'iobuffer'
+
 module Shortwave
   module Pipeline
     class Excon
       def initialize(url)
-        @conn = Excon.new(url, tcp_nodelay: true, connect_timeout: 6, ssl_verify_peer: false)
+        @conn = ::Excon.new(url, tcp_nodelay: true, connect_timeout: 6, ssl_verify_peer: false)
         @size = nil
-        @iobuffer = IO::Buffer.new
+        @iobuffer = ::IO::Buffer.new
         @fiber_delegate = Fiber.new { process }
       end
 
@@ -44,8 +46,6 @@ module Shortwave
       def process
         first_byte = true
         @conn.get(response_block: -> (chunk, remaining, total) {
-          Rails.logger.info "Remaining: #{remaining.to_f / total}%"
-
           if first_byte
             first_byte = false
             Fiber.yield(total)

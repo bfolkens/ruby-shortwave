@@ -5,14 +5,14 @@ module Shortwave
     attr_accessor :asset_host
     attr_accessor :backend
     attr_accessor :cache_unsaved_attachments
-
+    
     def initialize(obj, namespace, source_stream)
       self.asset_host = Shortwave::Config.asset_host
       self.backend = Shortwave::Config.backend.new(self)
       self.cache_unsaved_attachments = Shortwave::Config.cache_unsaved_attachments
 
       @obj = obj
-      @namespace = namespace
+      @namespace = Array(namespace)
       @source_stream = source_stream
     end
 
