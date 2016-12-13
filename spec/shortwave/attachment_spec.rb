@@ -4,6 +4,7 @@ describe Shortwave::Attachment do
   before do
     Shortwave::Config.asset_host = 'localhost'
     Shortwave::Config.cache_unsaved_attachments = false
+    Shortwave::Config.backend = Shortwave::Backend::Noop
   end
 
   context 'when cached' do
