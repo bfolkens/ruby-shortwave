@@ -1,0 +1,36 @@
+require 'spec_helper'
+
+describe Shortwave::Pipeline::Base do
+  context 'when a processor is defined' do
+    let(:obj) do
+      chunk = 'chunk'
+
+      Shortwave::Pipeline::Base.new.tap do |obj|
+        obj.define_singleton_method(:process) do
+          if @first_byte
+            @first_byte = false
+            Fiber.yield(chunk.size)
+          end
+
+          @iobuffer << chunk
+          Fiber.yield
+        end
+        obj.send(:reset)
+      end
+    end
+
+    it { expect(obj.read).to eql('chunk') }
+    it { expect(obj.read(4)).to eql('chun') }
+
+    it 'reads by replacing buffer content' do
+      buffer = ''
+      obj.read(4, buffer)
+      expect(buffer).to eql('chun')
+    end
+
+    it 'reads sequentially' do
+      expect(obj.read(3)).to eql('chu')
+      expect(obj.read(2)).to eql('nk')
+    end
+  end
+end

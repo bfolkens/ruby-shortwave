@@ -26,5 +26,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec-mocks", "~> 3.5"
 
 	spec.add_runtime_dependency 'iobuffer', '~> 1.1.2'
+  spec.add_runtime_dependency 'excon', '~> 0.54'
   spec.add_runtime_dependency 'aws-sdk', '~> 2'
 end

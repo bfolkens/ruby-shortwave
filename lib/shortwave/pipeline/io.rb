@@ -1,24 +1,21 @@
 module Shortwave
   module Pipeline
-    class IO
+    class IO < Base
       def initialize(io)
+        reset
         @io = io
-        @size = nil
       end
 
-      def size
-        @size
-      end
+      protected
 
-      def rewind
-        @io.rewind
-      end
+      def process
+        if @first_byte
+          @first_byte = false
+          Fiber.yield(@io.size)
+        end
 
-      def reader
-        Fiber.new {
-          @size = @io.size
-          Fiber.yield @io.readpartial(BUFFER_SIZE)
-        }
+        @iobuffer << @io.readpartial(::IO::Buffer.default_node_size)
+        Fiber.yield
       end
     end
   end
