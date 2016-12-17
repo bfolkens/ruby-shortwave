@@ -4,6 +4,8 @@ require 'fiber'
 module Shortwave
   module Pipeline
     class Base
+      attr_accessor :chunk_read_delegate
+
       def close
         @first_byte = true
         @iobuffer.close
@@ -20,6 +22,7 @@ module Shortwave
 
         data = size.nil? ? @iobuffer.read : @iobuffer.read(size)
         data.tap do |chunk|
+          chunk_read_delegate.call(chunk) unless chunk_read_delegate.nil?
           buffer.replace(chunk) unless buffer.nil?
         end
       end

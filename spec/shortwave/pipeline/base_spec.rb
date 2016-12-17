@@ -32,5 +32,12 @@ describe Shortwave::Pipeline::Base do
       expect(obj.read(3)).to eql('chu')
       expect(obj.read(2)).to eql('nk')
     end
+
+    it 'invokes callback after chunk read' do
+      obj.chunk_read_delegate = double
+      expect(obj.chunk_read_delegate).to receive(:call).with('chunk')
+
+      obj.read
+    end
   end
 end
