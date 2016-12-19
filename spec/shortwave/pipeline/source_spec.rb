@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe Shortwave::Pipeline::Base do
+describe Shortwave::Pipeline::Source do
   context 'when a processor is defined' do
     let(:obj) do
       chunk = 'chunk'
 
-      Shortwave::Pipeline::Base.new.tap do |obj|
+      Shortwave::Pipeline::Source.new.tap do |obj|
         obj.define_singleton_method(:process) do
           if @first_byte
             @first_byte = false
@@ -43,7 +43,7 @@ describe Shortwave::Pipeline::Base do
     it 'rewinds and reads from memo' do
       obj.read(3)
       obj.rewind
-      
+
       expect(obj.read(3)).to eql('chu')
       expect(obj.read(2)).to eql('nk')
     end

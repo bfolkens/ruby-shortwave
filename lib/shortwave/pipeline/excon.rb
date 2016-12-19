@@ -2,7 +2,7 @@ require 'excon'
 
 module Shortwave
   module Pipeline
-    class Excon < Base
+    class Excon < Source
       def initialize(url)
         reset
         @conn = ::Excon.new(url, tcp_nodelay: true, connect_timeout: 6, ssl_verify_peer: false)

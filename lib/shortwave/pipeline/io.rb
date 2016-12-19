@@ -1,6 +1,6 @@
 module Shortwave
   module Pipeline
-    class IO < Base
+    class IO < Source
       def initialize(io)
         reset
         @io = io
