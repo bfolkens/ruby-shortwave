@@ -12,23 +12,21 @@ module Shortwave
       end
 
       def attach(pipeline)
-        @memo = StringIO.new
-        pipeline.chunk_read_delegate = lambda { |chunk|
-          @memo << chunk
-          each_callback(:after_attachment_bytes_read, @obj, chunk)
+        pipeline.chunk_read_delegate = lambda { |memo, chunk|
+          each_callback(:after_attachment_bytes_read, @obj, memo, chunk)
         }
       end
 
       protected
 
-      def each_callback(name, obj, chunk)
+      def each_callback(name, obj, memo, chunk)
         @callback_skip_list[name] ||= []
 
         @callbacks[name].each_with_index do |args, i|
           next if @callback_skip_list[name].include?(i)
 
           options, l = args
-          if @memo.size > options[:count]
+          if memo.size > options[:count]
             l.call(obj, chunk)
             @callback_skip_list[name] << i
           end

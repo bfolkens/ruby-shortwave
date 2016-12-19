@@ -35,9 +35,17 @@ describe Shortwave::Pipeline::Base do
 
     it 'invokes callback after chunk read' do
       obj.chunk_read_delegate = double
-      expect(obj.chunk_read_delegate).to receive(:call).with('chunk')
+      expect(obj.chunk_read_delegate).to receive(:call).with(kind_of(StringIO), 'chunk')
 
       obj.read
+    end
+
+    it 'rewinds and reads from memo' do
+      obj.read(3)
+      obj.rewind
+      
+      expect(obj.read(3)).to eql('chu')
+      expect(obj.read(2)).to eql('nk')
     end
   end
 end
