@@ -9,7 +9,7 @@ describe Shortwave::Attachment do
 
   context 'when cached' do
     let(:obj) { double('obj', test_filename: 'test.jpg', new_record?: true, id: nil) }
-    let(:attachment) { Shortwave::Attachment.new(obj, ['test_object', 'test'], nil) }
+    let(:attachment) { Shortwave::Attachment.new(obj, ['test_object', 'test']) }
     before { attachment.cache_unsaved_attachments = true }
 
     it { expect(attachment.cache_key).to_not be_nil }
@@ -18,7 +18,7 @@ describe Shortwave::Attachment do
 
   context 'when stored' do
     let(:obj) { double('obj', test_filename: 'test.jpg', new_record?: false, id: 1001) }
-    let(:attachment) { Shortwave::Attachment.new(obj, ['test_object', 'test'], nil) }
+    let(:attachment) { Shortwave::Attachment.new(obj, ['test_object', 'test']) }
 
     it { expect(attachment.cache_key).to_not be_nil }
     it { expect(attachment.url).to eq('localhost/test_object/test/1001/test.jpg') }
@@ -26,7 +26,7 @@ describe Shortwave::Attachment do
 
   context 'when filename is empty' do
     let(:obj) { double('obj', test_filename: '', new_record?: true, id: nil) }
-    let(:attachment) { Shortwave::Attachment.new(obj, ['test'], nil) }
+    let(:attachment) { Shortwave::Attachment.new(obj, ['test']) }
 
     it { expect { attachment.path }.to raise_error Shortwave::EmptyFilenameException }
   end
@@ -34,7 +34,7 @@ describe Shortwave::Attachment do
   context 'when a stream is supplied' do
     let(:stream) { StringIO.new('contents') }
     let(:obj) { double('obj', test_filename: 'test.jpg', new_record?: true, id: nil) }
-    let(:attachment) { Shortwave::Attachment.new(obj, ['test'], stream) }
+    let(:attachment) { Shortwave::Attachment.new(obj, ['test']).tap {|a| a.pipeline = stream }}
     let(:backend) { double }
     before { attachment.backend = backend }
 
