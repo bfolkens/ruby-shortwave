@@ -5,15 +5,15 @@ module Shortwave
     attr_accessor :asset_host
     attr_accessor :backend
     attr_accessor :cache_unsaved_attachments
+    attr_accessor :pipeline
 
-    def initialize(obj, namespace, pipeline)
+    def initialize(obj, namespace)
       self.asset_host = Shortwave::Config.asset_host
       self.backend = Shortwave::Config.backend.new(self)
       self.cache_unsaved_attachments = Shortwave::Config.cache_unsaved_attachments
 
       @obj = obj
       @namespace = Array(namespace)
-      @pipeline = pipeline
     end
 
     def url
@@ -56,12 +56,12 @@ module Shortwave
 
     # TODO: caching in backends
     # def cache!
-    #   backend.write(@pipeline)
+    #   backend.write(pipeline)
     # end
 
     def persist!
       # TODO: backend.persist_cache if cached?
-      backend.write(@pipeline)
+      backend.write(pipeline)
     end
 
     def remove!

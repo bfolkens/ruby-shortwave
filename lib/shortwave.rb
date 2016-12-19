@@ -8,6 +8,7 @@ require 'shortwave/pipeline/base'
 require 'shortwave/pipeline/excon'
 require 'shortwave/pipeline/io'
 require 'shortwave/attachment'
+require 'shortwave/callbacks'
 require 'shortwave/config'
 
-# require 'shortwave/rails/active_model_helper'
+require 'shortwave/active_record/callback_helper'
