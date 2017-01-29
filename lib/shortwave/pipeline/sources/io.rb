@@ -6,8 +6,6 @@ module Shortwave
         @io = io
       end
 
-      protected
-
       def process
         if @first_byte
           @first_byte = false

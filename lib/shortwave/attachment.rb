@@ -2,10 +2,11 @@ module Shortwave
   class EmptyFilenameException < Exception; end
 
   class Attachment
+    include Pipeline::Destination
+
     attr_accessor :asset_host
     attr_accessor :backend
     attr_accessor :cache_unsaved_attachments
-    attr_accessor :pipeline
 
     def initialize(obj, namespace)
       self.asset_host = Shortwave::Config.asset_host

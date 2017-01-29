@@ -8,8 +8,6 @@ module Shortwave
         @conn = ::Excon.new(url, tcp_nodelay: true, connect_timeout: 6, ssl_verify_peer: false)
       end
 
-      protected
-
       def process
         @conn.get(response_block: -> (chunk, remaining, total) {
           if @first_byte
